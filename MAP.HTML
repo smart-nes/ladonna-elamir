@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروع مركز التجميل الأنيق</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #D4AF37;
+            --accent-color: #A78B5D;
+            --light-bg: #000000;
+            --text-color: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #222222 100%);
+            color: var(--text-color);
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+        }
+        
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .branches-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            gap: 0.5rem;
+        }
+        
+        .tab-btn {
+            background: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            cursor: pointer;
+            border-radius: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-btn::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-btn.active::before {
+            width: 100%;
+        }
+        
+        .tab-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        
+        .branch-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .branch-content.active {
+            display: block;
+        }
+        
+        .map-container {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .map {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+        
+        .location-card {
+            background: rgb(0, 0, 0);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(255, 208, 0, 0.384);
+            margin-bottom: 2rem;
+        }
+        
+        .location-card h1 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-icon {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            margin-left: 1rem;
+            margin-top: 0.2rem;
+            min-width: 25px;
+        }
+        
+        .detail-content h3 {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin-bottom: 0.3rem;
+        }
+        
+        .detail-content p {
+            font-size: 1rem;
+            color: #e0e0e0;
+        }
+        
+        .directions-box {
+            background: linear-gradient(135deg, #000000 0%, #000000 100%);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .directions-box h3 {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .directions-box h3 i {
+            color: var(--secondary-color);
+            margin-left: 0.5rem;
+        }
+        
+        .directions-box ol {
+            padding-right: 1.5rem;
+        }
+        
+        .directions-box li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-right: 1.5rem;
+            color: #e0e0e0;
+        }
+        
+        .directions-box li::before {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+        }
+        
+        .landmarks {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .landmark {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 3px 10px rgba(192, 72, 72, 0.2);
+            border: 1px solid rgba(224, 201, 66, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .landmark:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(192, 97, 9, 0.4);
+        }
+        
+        .landmark h4 {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .landmark h4 i {
+            color: var(--accent-color);
+            margin-left: 0.5rem;
+        }
+        
+        .landmark p {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        /* زر الواتساب العائم المعدل */
+        .whatsapp-float {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            bottom: 20px;
+            left: 20px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            background-color: #128C7E;
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                width: 45px;
+                height: 45px;
+                font-size: 22px;
+                bottom: 15px;
+                left: 15px;
+            }
+            
+            .map {
+                height: 300px;
+            }
+            
+            .branches-tabs {
+                gap: 0.3rem;
+            }
+            
+            .tab-btn {
+                padding: 0.6rem 1rem;
+            }
+            
+            .landmarks {
+                grid-template-columns: 1fr;
+            }
+        }
+      
+        /* تذييل الصفحة */
+        footer {
+            background: var(--primary-color);
+            padding: 2rem 1rem;
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .footer-contact {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 0 auto 1rem;
+            max-width: 500px;
+        }
+
+        .contact-logo {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo-img {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            object-fit: contain;
+            padding: 2px;
+        }
+
+        .contact-info {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-links a:hover {
+            color: #b8972e;
+            transform: scale(1.1);
+        }
+
+        .footer-contact a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-contact a:hover {
+            color: #b8972e;
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>فروع مركز التجميل الأنيق</h1>
+            <p>اختر الفرع الأقرب إليك</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="branches-tabs">
+            <button class="tab-btn active" data-tab="branch1">الفرع الأول - المقطم</button>
+            <button class="tab-btn" data-tab="branch2">الفرع الثاني - مدينة نصر</button>
+        </div>
+
+        <!-- الفرع الأول -->
+        <div id="branch1" class="branch-content active">
+            <div class="map-container">
+                <iframe class="map" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d265.69211355574913!2d31.287029507535088!3d30.01272321374996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145839c10b94b4fd%3A0x6f46b5378248b432!2z2YTYp9iv2YjZhtinINio2YrZiNiq2Yog2LXYp9mE2YjZhiDZgdix2Lkg2KfZhNmF2YLYt9mF!5e1!3m2!1sar!2seg!4v1747954177548!5m2!1sar!2seg" 
+                    allowfullscreen="" 
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+            <div class="location-card">
+                <h1>الفرع الأول - المقطم</h1>
+                
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="detail-content">
+                        <h3>العنوان الدقيق</h3>
+                        <p>المقطم، شارع الرخاوي، شارع 10 متفرع من شارع 9، أمام مكتب البريد</p>
+                    </div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="far fa-clock"></i>
+                    </div>
+                    <div class="detail-content">
+                        <h3>أوقات العمل</h3>
+                        <p>يوميًا من 10 صباحًا حتى 10 مساءً</p>
+                    </div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="detail-content">
+                        <h3>مواقف السيارات</h3>
+                        <p>مواقف متوفرة أمام المركز وعلى جانبي الشارع</p>
+                    </div>
+                </div>
+                
+                <div class="directions-box">
+                    <h3><i class="fas fa-route"></i> إرشادات الوصول</h3>
+                    <ol>
+                        <li>اتجه نحو منطقة المقطم الرئيسية</li>
+                        <li>ابحث عن شارع الرخاوي (الشارع الرئيسي)</li>
+                        <li>خذ شارع 9 ثم انعطف إلى شارع 10</li>
+                        <li>سوف تجد المركز أمام مكتب البريد مباشرة</li>
+                    </ol>
+                </div>
+                
+                <h3 style="margin-top: 2rem;">معالم قريبة</h3>
+                <div class="landmarks">
+                    <div class="landmark">
+                        <h4><i class="fas fa-mail-bulk"></i> مكتب البريد</h4>
+                        <p>أمام المركز مباشرة</p>
+                    </div>
+                    <div class="landmark">
+                        <h4><i class="fas fa-shopping-bag"></i> سوق المقطم التجاري</h4>
+                        <p>على بعد 5 دقائق سيرًا على الأقدام</p>
+                    </div>
+                    <div class="landmark">
+                        <h4><i class="fas fa-mosque"></i> مسجد الرحمة</h4>
+                        <p>على بعد 3 دقائق بالسيارة</p>
+                    </div>
+                    <div class="landmark">
+                        <h4><i class="fas fa-school"></i> مدرسة المقطم الدولية</h4>
+                        <p>على بعد 7 دقائق بالسيارة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الفرع الثاني -->
+        <div id="branch2" class="branch-content">
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d4290.815883782544!2d30.976958284885185!3d30.029922481887574!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzDCsDAxJzQ3LjciTiAzMMKwNTgnMjkuMiJF!5e1!3m2!1sar!2seg!4v1748009996846!5m2!1sar!2seg" width="1400" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>            <div class="location-card">
+                <h1>الفرع الثاني - مدينة نصر</h1>
+                
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="detail-content">
+                        <h3>العنوان الدقيق</h3>
+                        <p>مدينة نصر، شارع مصطفى النحاس، بجوار سيتي سنتر</p>
+                    </div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="far fa-clock"></i>
+                    </div>
+                    <div class="detail-content">
+                        <h3>أوقات العمل</h3>
+                        <p>يوميًا من 9 صباحًا حتى 11 مساءً</p>
+                    </div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="detail-content">
+                        <h3>مواقف السيارات</h3>
+                        <p>مواقف متوفرة في سيتي سنتر المجاور</p>
+                    </div>
+                </div>
+                
+                <div class="directions-box">
+                    <h3><i class="fas fa-route"></i> إرشادات الوصول</h3>
+                    <ol>
+                        <li>اتجه نحو سيتي سنتر مدينة نصر</li>
+                        <li>ابحث عن شارع مصطفى النحاس</li>
+                        <li>سوف تجد المركز على يمينك بعد 100 متر من سيتي سنتر</li>
+                        <li>يوجد لافتة ذهبية كبيرة تحمل شعار المركز</li>
+                    </ol>
+                </div>
+                
+                <h3 style="margin-top: 2rem;">معالم قريبة</h3>
+                <div class="landmarks">
+                    <div class="landmark">
+                        <h4><i class="fas fa-shopping-cart"></i> سيتي سنتر</h4>
+                        <p>على بعد دقيقتين سيرًا على الأقدام</p>
+                    </div>
+                    <div class="landmark">
+                        <h4><i class="fas fa-utensils"></i> مطاعم المنطقة</h4>
+                        <p>مجموعة متنوعة من المطاعم القريبة</p>
+                    </div>
+                    <div class="landmark">
+                        <h4><i class="fas fa-hotel"></i> فندق شيراتون</h4>
+                        <p>على بعد 5 دقائق بالسيارة</p>
+                    </div>
+                    <div class="landmark">
+                        <h4><i class="fas fa-subway"></i> محطة المترو</h4>
+                        <p>على بعد 10 دقائق سيرًا</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- زر الواتساب العائم المعدل -->
+   <a href="https://wa.me/201003322152" class="whatsapp-float" target="_blank" aria-label="تواصل عبر واتساب">
+       <i class="fab fa-whatsapp"></i>
+   </a>
+
+   <!-- تذييل الصفحة -->
+   <footer>
+       <div class="footer-contact">
+           <div class="contact-logo">
+               <img src="S.png" alt="شعار المركز" loading="lazy" class="footer-logo-img">
+           </div>
+           <div class="contact-info">
+               <p>اتصل بنا: 
+                   <a href="tel:+201224766684">+201224766684</a> | 
+                   <a href="https://wa.me/201115238909">واتساب</a>
+               </p>
+               <div class="footer-links">
+                   <a href="https://www.facebook.com/socialnest1?locale=ar_AR" target="_blank" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+                   <a href="https://www.instagram.com/socialnest1?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" aria-label="إنستجرام"><i class="fab fa-instagram"></i></a>
+                   <a href="https://www.tiktok.com/@socialnest1?is_from_webapp=1&sender_device=pchttps://tiktok.com" target="_blank" aria-label="تيك توك"><i class="fab fa-tiktok"></i></a>
+                   <a href="https://wa.me/01115238910" target="_blank" aria-label="واتساب"><i class="fab fa-whatsapp"></i></a>
+               </div>
+           </div>
+       </div>
+       <p>لخدمات سوشيال نيست والكارت الذكي كلمنا</p>
+   </footer>
+
+    <script>
+        // تبديل الفروع
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // إزالة النشاط من جميع الأزرار
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // إضافة النشاط للزر المحدد
+                button.classList.add('active');
+                
+                // إخفاء جميع المحتويات
+                document.querySelectorAll('.branch-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // إظهار المحتوى المحدد
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
