@@ -26,16 +26,35 @@
             color: var(--text-color);
             line-height: 1.6;
             font-family: 'Cairo', 'Montserrat', sans-serif;
-        }
-        
-        /* Language switcher styles */
-        .lang-switcher {
-            text-align: center;
-            padding: 1rem;
-            background: #111;
+            position: relative; /* Needed for absolute positioning of home button */
+            padding-top: 60px; /* Add padding to prevent content from overlapping with the fixed nav */
         }
 
-        .lang-btn {
+        /* Home button floating top of the page */
+        .home-btn-container {
+            position: absolute;
+            top: 10px;
+            z-index: 1001; /* Ensure it's above other content */
+        }
+        .lang-ar .home-btn-container { left: 15px; }
+        .lang-en .home-btn-container { right: 15px; }
+
+        /* Navigation bar styles */
+        .top-nav {
+            text-align: center;
+            padding: 0.8rem 1rem;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            position: fixed; /* Fix nav to the top */
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav-btn {
             background: var(--secondary-color);
             color: var(--primary-color);
             border: none;
@@ -45,16 +64,16 @@
             font-size: 1rem;
             font-family: 'Cairo', 'Montserrat', sans-serif;
             font-weight: 700;
-            margin: 0 0.5rem;
             transition: all 0.3s ease;
+            text-decoration: none;
         }
 
-        .lang-btn:hover, .lang-btn.active {
+        .nav-btn:hover, .nav-btn.active {
             background: #fff;
             color: #000;
             transform: scale(1.05);
         }
-
+        
         /* Hide content by default */
         .lang-en, .lang-ar {
             display: none;
@@ -65,66 +84,11 @@
         }
 
         /* Direction-specific styles */
-        .lang-en {
-            direction: ltr;
-            text-align: left;
-        }
-
-        .lang-ar {
-            direction: rtl;
-            text-align: right;
-        }
-
-        .lang-en .detail-icon {
-            margin-right: 1rem;
-            margin-left: 0;
-        }
+        .lang-en { direction: ltr; text-align: left; }
+        .lang-ar { direction: rtl; text-align: right; }
+        .lang-en .detail-icon { margin-right: 1rem; margin-left: 0; }
+        .lang-ar .detail-icon { margin-left: 1rem; margin-right: 0; }
         
-        .lang-ar .detail-icon {
-            margin-left: 1rem;
-            margin-right: 0;
-        }
-
-        .lang-en .directions-box ol {
-            padding-left: 1.5rem;
-            padding-right: 0;
-        }
-
-        .lang-ar .directions-box ol {
-            padding-right: 1.5rem;
-            padding-left: 0;
-        }
-        
-        .lang-en .directions-box li {
-            padding-left: 1.5rem;
-            padding-right: 0;
-        }
-        
-        .lang-ar .directions-box li {
-            padding-right: 1.5rem;
-            padding-left: 0;
-        }
-
-        .lang-en .directions-box li::before {
-            left: 0;
-            right: auto;
-        }
-
-        .lang-ar .directions-box li::before {
-            right: 0;
-            left: auto;
-        }
-        
-        .lang-en .landmark h4 i {
-            margin-right: 0.5rem;
-            margin-left: 0;
-        }
-
-        .lang-ar .landmark h4 i {
-            margin-left: 0.5rem;
-            margin-right: 0;
-        }
-
         .header {
             background: linear-gradient(135deg, var(--primary-color) 0%, #222222 100%);
             color: var(--text-color);
@@ -214,80 +178,6 @@
             color: #e0e0e0;
         }
 
-        .directions-box {
-            background: linear-gradient(135deg, #000000 0%, #000000 100%);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        .directions-box h3 {
-            font-size: 1.2rem;
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .directions-box h3 i {
-            color: var(--secondary-color);
-        }
-        
-        .directions-box li {
-            margin-bottom: 0.8rem;
-            position: relative;
-            color: #e0e0e0;
-        }
-
-        .directions-box li::before {
-            content: "";
-            position: absolute;
-            top: 0.5rem;
-            width: 8px;
-            height: 8px;
-            background-color: var(--secondary-color);
-            border-radius: 50%;
-        }
-
-        .landmarks {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .landmark {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 3px 10px rgba(192, 72, 72, 0.2);
-            border: 1px solid rgba(224, 201, 66, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .landmark:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(192, 97, 9, 0.4);
-        }
-
-        .landmark h4 {
-            font-size: 1.1rem;
-            color: var(--secondary-color);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .landmark h4 i {
-            color: var(--accent-color);
-        }
-
-        .landmark p {
-            color: #e0e0e0;
-            font-size: 0.9rem;
-        }
-
         .whatsapp-float {
             position: fixed;
             width: 50px;
@@ -312,7 +202,6 @@
         .whatsapp-float:hover {
             background-color: #128C7E;
             transform: scale(1.1) translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         footer {
@@ -326,39 +215,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
             gap: 1rem;
             margin: 0 auto 1rem;
             max-width: 500px;
         }
 
-        .contact-logo img {
-            width: 60px;
-            height: auto;
-        }
-        
-        footer p {
-            margin-bottom: 1rem;
-            font-size: 1rem;
-            color: var(--text-color);
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-        
-        .footer-links a, .footer-contact a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover, .footer-contact a:hover {
-            color: #b8972e;
-        }
+        .contact-logo img { width: 60px; height: auto; }
+        footer p { margin-bottom: 1rem; font-size: 1rem; color: var(--text-color); }
+        .footer-links { display: flex; justify-content: center; gap: 1rem; margin-top: 0.5rem; }
+        .footer-links a, .footer-contact a { color: var(--secondary-color); text-decoration: none; transition: color 0.3s ease; }
+        .footer-links a:hover, .footer-contact a:hover { color: #b8972e; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -368,129 +234,35 @@
 </head>
 <body>
 
-    <div class="lang-switcher">
-        <button class="lang-btn active" data-lang="ar">العربية</button>
-        <button class="lang-btn" data-lang="en">English</button>
+    <div class="home-btn-container">
+         <a href="index.html" class="nav-btn home-btn">الرئيسية</a>
+    </div>
+
+    <div class="top-nav">
+        <button class="nav-btn lang-btn active" data-lang="ar">العربية</button>
+        <button class="nav-btn lang-btn" data-lang="en">English</button>
     </div>
 
     <div id="ar-content" class="lang-ar active">
-        <header class="header">
-            <div class="container">
-                <h1>فروع لادونا الأمير</h1>
-                <p>مرحبًا بك في فروعنا</p>
-            </div>
-        </header>
-
-        <div class="container">
-            <div class="branch-content">
-                <div class="location-card">
-                    <h1>الفرع الأول - المقطم</h1>
-                    <div class="map-container">
-                        <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.551939130758!2d31.29294408488583!3d30.02102892693895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1458380e88226065%3A0x89c7c2a7e7805156!2z2YXYs9iq2LTZgipzINmF2LPYqtmG!5e0!3m2!1sen!2seg!4v1622058972863!5m2!1sen!2seg" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="detail-content"><h3>العنوان</h3><p>المقطم، شارع 10 متفرع من شارع 9، أمام مكتب البريد</p></div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon"><i class="far fa-clock"></i></div>
-                        <div class="detail-content"><h3>أوقات العمل</h3><p>يوميًا من 10 صباحًا حتى 10 مساءً</p></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="branch-content">
-                <div class="location-card">
-                    <h1>الفرع الثاني - مدينة نصر</h1>
-                    <div class="map-container">
-                        <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.649981881727!2d31.34966631511521!3d30.04692898188165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583cfd5d050517%3A0x742742911b3383a1!2z2YXYs9iq2LTZgdiMINin2YTZhdmG2LfYp9iv!5e0!3m2!1sen!2seg!4v1622059048381!5m2!1sen!2seg" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="detail-content"><h3>العنوان</h3><p>مدينة نصر، شارع مصطفى النحاس، بجوار سيتي سنتر</p></div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon"><i class="far fa-clock"></i></div>
-                        <div class="detail-content"><h3>أوقات العمل</h3><p>يوميًا من 9 صباحًا حتى 11 مساءً</p></div>
-                    </div>
-                </div>
-            </div>
+ <header class="header"><div class="container"><h1>فروع لادونا الأمير</h1><p>مرحبًا بك في فروعنا</p></div></header>
+ <div class="container">
+ <div class="branch-content"><div class="location-card"><h1>الفرع الأول - المقطم</h1><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4251.0665434966995!2d31.289558423826215!3d30.01289292006371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145839c10b94b4fd%3A0x6f46b5378248b432!2z2YTYp9iv2YjZhtinINio2YrZiNiq2Yog2LXYp9mE2YjZhiDZgdix2Lkg2KfZhNmF2YLYt9mF!5e1!3m2!1sar!2seg!4v1748279306283!5m2!1sar!2seg" width="1200" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div><div class="detail-item"><div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div><div class="detail-content"><h3>العنوان</h3><p>المقطم، شارع 10 متفرع من شارع 9، أمام مكتب البريد</p></div></div><div class="detail-item"><div class="detail-icon"><i class="far fa-clock"></i></div><div class="detail-content"><h3>أوقات العمل</h3><p>يوميًا من 10 صباحًا حتى 10 مساءً</p></div></div></div></div>
+<div class="branch-content"><div class="location-card"><h1>الفرع الثاني - مدينة نصر</h1><div class="map-container">
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4250.336289798013!2d30.97734452382576!3d30.02992711925729!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145859001fbc04d3%3A0x4e98b27e87c841fd!2z2LXYp9mE2YjZhiDYqtis2YXZitmEIGxhZG9ubmEgZWxhbWlyIHwg2YTYp9iv2YjZhtinINin2YTYo9mF2YrYsQ!5e1!3m2!1sar!2seg!4v1748279575851!5m2!1sar!2seg" width="1200" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>            
+            </div><div class="detail-item"><div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div><div class="detail-content"><h3>العنوان</h3><p>مدينة نصر، شارع مصطفى النحاس، بجوار سيتي سنتر</p></div></div><div class="detail-item"><div class="detail-icon"><i class="far fa-clock"></i></div><div class="detail-content"><h3>أوقات العمل</h3><p>يوميًا من 9 صباحًا حتى 11 مساءً</p></div></div></div></div>
         </div>
-
         <a href="https://wa.me/201003322152" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
-
-        <footer>
-            <div class="footer-contact">
-                <div class="contact-logo"><img src="S.png" alt="شعار"></div>
-                <div class="contact-info"><p>اتصل بنا: <a href="tel:+201224766684">+201224766684</a> | <a href="https://wa.me/201115238909">واتساب</a></p></div>
-            </div>
-            <div class="footer-links">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-tiktok"></i></a>
-            </div>
-            <p>لخدمات سوشيال نيست والكارت الذكي كلمنا</p>
-        </footer>
+        <footer><div class="footer-contact"><div class="contact-logo"><img src="S.png" alt="شعار"></div><div class="contact-info"><p>اتصل بنا: <a href="tel:+201224766684">+201224766684</a> | <a href="https://wa.me/201115238909">واتساب</a></p></div></div><div class="footer-links"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div><p>لخدمات سوشيال نيست والكارت الذكي كلمنا</p></footer>
     </div>
     
     <div id="en-content" class="lang-en">
-        <header class="header">
-            <div class="container">
-                <h1>La Donna Al-Amir Branches</h1>
-                <p>Welcome to Our Branches</p>
-            </div>
-        </header>
-
+        <header class="header"><div class="container"><h1>La Donna Al-Amir Branches</h1><p>Welcome to Our Branches</p></div></header>
         <div class="container">
-            <div class="branch-content">
-                <div class="location-card">
-                    <h1>First Branch - Mokattam</h1>
-                    <div class="map-container">
-                        <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.551939130758!2d31.29294408488583!3d30.02102892693895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1458380e88226065%3A0x89c7c2a7e7805156!2z2YXYs9iq2LTZgipzINmF2LPYqtmG!5e0!3m2!1sen!2seg!4v1622058972863!5m2!1sen!2seg" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="detail-content"><h3>Address</h3><p>Mokattam, Street 10, off Street 9, in front of the Post Office</p></div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon"><i class="far fa-clock"></i></div>
-                        <div class="detail-content"><h3>Working Hours</h3><p>Daily from 10 AM to 10 PM</p></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="branch-content">
-                <div class="location-card">
-                    <h1>Second Branch - Nasr City</h1>
-                    <div class="map-container">
-                        <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3453.649981881727!2d31.34966631511521!3d30.04692898188165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583cfd5d050517%3A0x742742911b3383a1!2z2YXYs9iq2LTZgdiMINin2YTZhdmG2LfYp9iv!5e0!3m2!1sen!2seg!4v1622059048381!5m2!1sen!2seg" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="detail-content"><h3>Address</h3><p>Nasr City, Moustafa El-Nahas St, next to City Centre</p></div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon"><i class="far fa-clock"></i></div>
-                        <div class="detail-content"><h3>Working Hours</h3><p>Daily from 9 AM to 11 PM</p></div>
-                    </div>
-                </div>
-            </div>
+            <div class="branch-content"><div class="location-card"><h1>First Branch - Mokattam</h1><div class="map-container"><iframe class="map" src="https://maps.google.com/maps?q=29.999638,31.288591&hl=en;z=14&amp;output=embed" allowfullscreen="" loading="lazy"></iframe></div><div class="detail-item"><div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div><div class="detail-content"><h3>Address</h3><p>Mokattam, Street 10, off Street 9, in front of the Post Office</p></div></div><div class="detail-item"><div class="detail-icon"><i class="far fa-clock"></i></div><div class="detail-content"><h3>Working Hours</h3><p>Daily from 10 AM to 10 PM</p></div></div></div></div>
+            <div class="branch-content"><div class="location-card"><h1>Second Branch - Nasr City</h1><div class="map-container"><iframe class="map" src="https://maps.google.com/maps?q=30.059616,31.328329&hl=en;z=14&amp;output=embed" allowfullscreen="" loading="lazy"></iframe></div><div class="detail-item"><div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div><div class="detail-content"><h3>Address</h3><p>Nasr City, Moustafa El-Nahas St, next to City Centre</p></div></div><div class="detail-item"><div class="detail-icon"><i class="far fa-clock"></i></div><div class="detail-content"><h3>Working Hours</h3><p>Daily from 9 AM to 11 PM</p></div></div></div></div>
         </div>
-        
         <a href="https://wa.me/201003322152" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
-
-        <footer>
-            <div class="footer-contact">
-                <div class="contact-logo"><img src="S.png" alt="Logo"></div>
-                <div class="contact-info"><p>Contact Us: <a href="tel:+201224766684">+201224766684</a> | <a href="https://wa.me/201115238909">WhatsApp</a></p></div>
-            </div>
-            <div class="footer-links">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-tiktok"></i></a>
-            </div>
-            <p>For Social Nest and Smart Card services, contact us</p>
-        </footer>
+        <footer><div class="footer-contact"><div class="contact-logo"><img src="S.png" alt="Logo"></div><div class="contact-info"><p>Contact Us: <a href="tel:+201224766684">+201224766684</a> | <a href="https://wa.me/201115238909">WhatsApp</a></p></div></div><div class="footer-links"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div><p>For Social Nest and Smart Card services, contact us</p></footer>
     </div>
 
     <script>
@@ -499,29 +271,49 @@
             const arContent = document.getElementById('ar-content');
             const enContent = document.getElementById('en-content');
             const htmlTag = document.documentElement;
+            const homeButton = document.querySelector('.home-btn');
+            const homeBtnContainer = document.querySelector('.home-btn-container');
+
+            function setLanguage(lang) {
+                // Update content visibility and HTML attributes
+                if (lang === 'ar') {
+                    arContent.classList.add('active');
+                    enContent.classList.remove('active');
+                    htmlTag.lang = 'ar';
+                    htmlTag.dir = 'rtl';
+                    homeButton.textContent = 'الرئيسية';
+                    homeBtnContainer.style.left = '15px';
+                    homeBtnContainer.style.right = 'auto';
+
+                } else {
+                    enContent.classList.add('active');
+                    arContent.classList.remove('active');
+                    htmlTag.lang = 'en';
+                    htmlTag.dir = 'ltr';
+                    homeButton.textContent = 'Home';
+                    homeBtnContainer.style.right = '15px';
+                    homeBtnContainer.style.left = 'auto';
+                }
+
+                // Update buttons state
+                langButtons.forEach(btn => {
+                    if (btn.getAttribute('data-lang') === lang) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
 
             langButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const selectedLang = button.getAttribute('data-lang');
-
-                    // Update buttons state
-                    langButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-
-                    // Update content visibility and HTML attributes
-                    if (selectedLang === 'ar') {
-                        arContent.classList.add('active');
-                        enContent.classList.remove('active');
-                        htmlTag.lang = 'ar';
-                        htmlTag.dir = 'rtl';
-                    } else {
-                        enContent.classList.add('active');
-                        arContent.classList.remove('active');
-                        htmlTag.lang = 'en';
-                        htmlTag.dir = 'ltr';
-                    }
+                    setLanguage(selectedLang);
                 });
             });
+
+            // Set initial language to Arabic
+            setLanguage('ar'); 
         });
     </script>
 </body>
