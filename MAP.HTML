@@ -434,6 +434,24 @@
             // Set initial language to Arabic
             setLanguage('ar'); 
         });
+// هذا الكود لمنع النقر بالزر الأيمن
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+// هذا الكود لمحاولة منع فتح أدوات المطور (غير فعال بشكل كامل)
+document.onkeydown = function(e) {
+    if (e.keyCode == 123) { // F12
+        return false;
+    }
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { // Ctrl+Shift+I
+        return false;
+    }
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { // Ctrl+Shift+J
+        return false;
+    }
+    if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U
+        return false;
+    }
+}
     </script>
 </body>
 </html>
