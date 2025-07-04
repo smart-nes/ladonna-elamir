@@ -1,226 +1,98 @@
-<script type="text/javascript">
-    var gk_isXlsx = false;
-    var gk_xlsxFileLookup = {};
-    var gk_fileData = {};
-    function filledCell(cell) {
-      return cell !== '' && cell != null;
-    }
-    function loadFileData(filename) {
-    if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-        try {
-            var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-            var firstSheetName = workbook.SheetNames[0];
-            var worksheet = workbook.Sheets[firstSheetName];
-
-            // Convert sheet to JSON to filter blank rows
-            var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-            // Filter out blank rows (rows where all cells are empty, null, or undefined)
-            var filteredData = jsonData.filter(row => row.some(filledCell));
-
-            // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-            var headerRowIndex = filteredData.findIndex((row, index) =>
-              row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-            );
-            // Fallback
-            if (headerRowIndex === -1 || headerRowIndex > 25) {
-              headerRowIndex = 0;
-            }
-
-            // Convert filtered JSON back to CSV
-            var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-            csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-            return csv;
-        } catch (e) {
-            console.error(e);
-            return "";
-        }
-    }
-    return gk_fileData[filename] || "";
-    }
-    </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>سمارت نيست</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-<link rel="manifest" href="./manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="./icons/icon-192x192.png">
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Cairo', sans-serif;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>سمارت نيست</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="./icons/icon-192x192.png">
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
+    body {background:#d40f05;color:#333;min-height:100vh;overflow-x:hidden;}
+    .container {max-width:1200px;margin:0 auto;padding:20px;position:relative;z-index:1;}
+    .hero {position:relative;min-height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;color:white;overflow:hidden;}
+    .hero video {position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1;}
+    .hero-content {background:rgba(0,0,0,0.7);padding:30px;border-radius:10px;max-width:90%;width:600px;}
+    .hero-content h1 {font-size:clamp(1.8rem,5vw,2.5rem);margin-bottom:20px;}
+    .hero-content p {font-size:clamp(1rem,3vw,1.2rem);margin-bottom:20px;}
+    .hero-content button {padding:12px 24px;background:#fb1106;color:white;border:none;border-radius:5px;font-size:clamp(0.9rem,2.5vw,1rem);font-weight:700;cursor:pointer;transition:background 0.3s, transform 0.3s;}
+    .hero-content button:hover {background:#d40f05;transform:translateY(-2px);}
+    .section {padding:40px 20px;background:white;margin:20px 0;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);text-align:center;position:relative;z-index:1;}
+    .section h2 {font-size:clamp(1.5rem,4vw,2rem);color:#fb1106;margin-bottom:20px;}
+    .section p {font-size:clamp(0.9rem,3vw,1.1rem);line-height:1.6;}
+    .accessories-video {margin-top:20px;}
+    .accessories-video video {max-width:100%;width:600px;border-radius:10px;border:2px solid #fb1106;}
+    @media (max-width:768px){
+      .hero{min-height:60vh;}
+      .hero-content{padding:20px;width:90%;}
+      .section{padding:20px;margin:10px;}
+      .accessories-video video{width:100%;}
     }
-    body {
-        background: #d40f05;
-        color: #333;
-        min-height: 100vh;
-        overflow-x: hidden;
+    @media (max-width:480px){
+      .hero-content h1{font-size:1.5rem;}
+      .hero-content p{font-size:0.9rem;}
+      .hero-content button{padding:10px 20px;font-size:0.9rem;}
+      .section h2{font-size:1.3rem;}
+      .section p{font-size:0.9rem;}
     }
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        position: relative;
-        z-index: 1;
-    }
-    .hero {
-        position: relative;
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: white;
-        overflow: hidden;
-    }
-    .hero video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -1;
-    }
-    .hero-content {
-        background: rgba(0, 0, 0, 0.7);
-        padding: 30px;
-        border-radius: 10px;
-        max-width: 90%;
-        width: 600px;
-    }
-    .hero-content h1 {
-        font-size: clamp(1.8rem, 5vw, 2.5rem);
-        margin-bottom: 20px;
-    }
-    .hero-content p {
-        font-size: clamp(1rem, 3vw, 1.2rem);
-        margin-bottom: 20px;
-    }
-    .hero-content button {
-        padding: 12px 24px;
-        background: #fb1106;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: clamp(0.9rem, 2.5vw, 1rem);
-        font-weight: 700;
-        cursor: pointer;
-        transition: background 0.3s, transform 0.3s;
-    }
-    .hero-content button:hover {
-        background: #d40f05;
-        transform: translateY(-2px);
-    }
-    .section {
-        padding: 40px 20px;
-        background: white;
-        margin: 20px 0;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        position: relative;
-        z-index: 1;
-    }
-    .section h2 {
-        font-size: clamp(1.5rem, 4vw, 2rem);
-        color: #fb1106;
-        margin-bottom: 20px;
-    }
-    .section p {
-        font-size: clamp(0.9rem, 3vw, 1.1rem);
-        line-height: 1.6;
-    }
-    .accessories-video {
-        margin-top: 20px;
-    }
-    .accessories-video video {
-        max-width: 100%;
-        width: 600px;
-        border-radius: 10px;
-        border: 2px solid #fb1106;
-    }
-    @media (max-width: 768px) {
-        .hero {
-            min-height: 60vh;
-        }
-        .hero-content {
-            padding: 20px;
-            width: 90%;
-        }
-        .section {
-            padding: 20px;
-            margin: 10px;
-        }
-        .accessories-video video {
-            width: 100%;
-        }
-    }
-    @media (max-width: 480px) {
-        .hero-content h1 {
-            font-size: 1.5rem;
-        }
-        .hero-content p {
-            font-size: 0.9rem;
-        }
-        .hero-content button {
-            padding: 10px 20px;
-            font-size: 0.9rem;
-        }
-        .section h2 {
-            font-size: 1.3rem;
-        }
-        .section p {
-            font-size: 0.9rem;
-        }
-    }
-</style>
+  </style>
 </head>
 <body>
+
 <div class="hero">
-    <video id="backgroundVideo" autoplay muted loop>
-        <source src="1.mp4" type="video/mp4">
-        فيديو الخلفية غير مدعوم.
-    </video>
-    <div class="hero-content">
-        <h1>تم تعطيل الكارت الذكي</h1>
-        <p>لقد انتهت المدة المجانية للكارت الذكي. لتفعيل الكارت مرة أخرى، يرجى التواصل مع سمارت نيست.</p>
-        <button onclick="window.location.href='https://smart-nes.github.io/smartnest/contact_us_page.html#contact'">تواصل مع سمارت نيست</button>
-    </div>
+  <video id="backgroundVideo" autoplay muted loop>
+    <source src="1.mp4" type="video/mp4">
+    فيديو الخلفية غير مدعوم.
+  </video>
+  <div class="hero-content">
+    <h1>تم تعطيل الكارت الذكي</h1>
+    <p>لقد انتهت المدة المجانية للكارت الذكي . لتفعيل الموقع مرة أخرى، يرجى التواصل مع سمارت نيست.</p>
+    <button onclick="window.location.href='https://smart-nes.github.io/smartnest/contact_us_page.html#contact'">تواصل مع سوشيال نيست</button>
+  </div>
 </div>
 
 <div class="container">
-    <div class="section">
-        <h2>رسالة اعتذار</h2>
-        <p>نعتذر منكم، عملائنا الكرام، عن عدم إمكانية تفعيل الكارت الذكي في حال عدم الاشتراك أو شراء الخدمة. نسعى دائمًا لتقديم أفضل تجربة لكم، ونشكركم على تفهمكم.</p>
-    </div>
+  <div class="section">
+    <h2>رسالة اعتذار</h2>
+    <p>نعتذر منكم، عملائنا الكرام، عن عدم إمكانية تفعيل كارتك الذكي في حال عدم الاشتراك أو شراء الخدمة. نسعى دائمًا لتقديم أفضل تجربة لكم، ونشكركم على تفهمكم.</p>
+  </div>
 
-    <div class="section">
-        <h2>اكسسوارات سمارت نيست</h2>
-        <p>اكتشف مجموعتنا المميزة من الخواتم والقلادات الذكية التي صُممت لتلبية احتياجاتك اليومية بأناقة وتكنولوجيا متقدمة. توفر اكسسوارات سمارت نيست تجربة فريدة من نوعها، حيث تجمع بين الأناقة والوظائف الذكية لتسهيل حياتك اليومية. سواء كنت تبحث عن خاتم ذكي لتتبع اللياقة البدنية أو قلادة ذكية لإدارة الإشعارات، فإن سمارت نيست تقدم لك الحلول المثالية.</p>
-        <div class="accessories-video">
-            <video autoplay muted loop>
-                <source src="2.mp4" type="video/mp4">
-                فيديو الاكسسوارات غير مدعوم.
-            </video>
-        </div>
+  <div class="section">
+    <h2>اكسسوارات سمارت نيست</h2>
+    <p>اكتشف مجموعتنا المميزة من الخواتم والقلادات الذكية التي صُممت لتلبية احتياجاتك اليومية بأناقة وتكنولوجيا متقدمة. توفر اكسسوارات سمارت نيست تجربة فريدة من نوعها، حيث تجمع بين الأناقة والوظائف الذكية لتسهيل حياتك اليومية. سواء كنت تبحث عن خاتم ذكي لتتبع اللياقة البدنية أو قلادة ذكية لإدارة الإشعارات، فإن سمارت نيست تقدم لك الحلول المثالية.</p>
+    <div class="accessories-video">
+      <video autoplay muted loop>
+        <source src="2.mp4" type="video/mp4">
+        فيديو الاكسسوارات غير مدعوم.
+      </video>
     </div>
+  </div>
+</div>
+
+<!-- 🔷 Footer Section -->
+<div class="footer-section" style="background: #222; color: #fff; text-align: center; padding: 30px 15px;">
+  <h3>
+    <span class="ar-text">تواصل معنا</span>
+    <span class="en-text" style="display: none;">Contact Info</span>
+  </h3>
+  <p><a href="mailto:socialnest37@gmail.com" style="color: #fff; text-decoration: underline;">socialnest37@gmail.com</a></p>
+  <p><a href="https://wa.me/201115238909" target="_blank" style="color: #fff; text-decoration: underline;">+201115238909 (واتساب)</a></p>
+  <p><a href="https://wa.me/201115238910" target="_blank" style="color: #fff; text-decoration: underline;">+201115238910 (واتساب)</a></p>
 </div>
 
 <script>
-    // دعم PWA
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Service Worker registered'))
-                .catch(err => console.error('Service Worker error:', err));
-        });
-    }
+  // دعم PWA
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('Service Worker registered'))
+        .catch(err => console.error('Service Worker error:', err));
+    });
+  }
 </script>
+
 </body>
 </html>
